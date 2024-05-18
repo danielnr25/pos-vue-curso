@@ -1,5 +1,9 @@
 <script setup>
    import Links from '@/components/Links.vue'
+   import {useProductsStore} from "@/stores/productos";
+   import Producto from '@/components/Producto.vue'
+
+   const products = useProductsStore();
 </script>
 
 <template>
@@ -10,8 +14,15 @@
          Nuevo Producto
       </Links>
 
-
-      <h1 class="text-3xl font-semibold my-8">Productos</h1>
+      <ul role="list" class="grid grid-cols gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">   
+         <Producto 
+            v-for="product in products.productsCollection" 
+            :key="product.id" 
+            :product="product"
+         
+         />
+      </ul>
+      
    </div>
 </template>
 
