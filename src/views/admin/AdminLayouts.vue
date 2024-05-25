@@ -4,7 +4,7 @@
 
 <template>
    <AdminNave />
-   <div class="pt-32 container mx-auto lg:min-h-screen sm:pt-44">
+   <div class="pt-40 px-10 container mx-auto lg:min-h-screen sm:pt-32">
       <RouterView />
    </div>
 </template>

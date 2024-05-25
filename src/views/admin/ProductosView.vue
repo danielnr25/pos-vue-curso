@@ -14,14 +14,16 @@
          Nuevo Producto
       </Links>
 
-      <ul role="list" class="grid grid-cols gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">   
+      <h1 class="text-4xl font-bold my-8">Listado de Productos</h1>
+
+      <div role="list" class="grid grid-cols gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">   
          <Producto 
             v-for="product in products.productsCollection" 
             :key="product.id" 
             :product="product"
-         
          />
-      </ul>
+      </div>
+
       
    </div>
 </template>

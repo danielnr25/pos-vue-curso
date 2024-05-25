@@ -1,7 +1,7 @@
 <script setup>
 import Logox from './Logox.vue';
 import Links from './Links.vue';
-
+import Categorias from './Categorias.vue';
 </script>
 
 <template>
@@ -17,4 +17,7 @@ import Links from './Links.vue';
          </Links>
       </nav>
    </header>
+   <div class="pt-28 lg:pt-16">
+      <Categorias />
+   </div>
 </template>
