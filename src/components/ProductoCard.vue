@@ -1,27 +1,36 @@
 <script setup>
+   import { UseCartStore } from '@/stores/carrito';
+   import { formatCurrency } from '@/helpers';
+   
+   const cart = UseCartStore();
+
    defineProps({
       product:{
          type: Object,
       }
    })
 
-   import { formatCurrency } from '@/helpers';
 </script>
 
 <template>
-   <div class="rounded-lg bg-white shadow-md relative">
-      <img class="rounded-lg cursor-pointer transition-transform transform hover:scale-105 hover:rounded-lg" :src="product.image" :alt="'Imagen de ' + product.name" />
-      <div class="p-3 space-y-2">
-        <h3 class="text-xl font-bold text-gray-800">{{ product.name }}</h3>
-        <p class="text-gray-500">Disponibles: {{ product.stock }}</p>
-        <p class="text-2xl font-extrabold text-blue-900">
-          {{ formatCurrency(product.price) }}
-        </p>
+   <div class="rounded-lg bg-gray-100 shadow-md relative">
+      <img class="rounded-t-lg lg:w-80 w-96 cursor-pointer transition-transform transform hover:scale-105 hover:rounded-lg" :src="product.image" :alt="'Imagen de ' + product.name" />
+      <div class="p-2 space-y-2 bg-gray-100 rounded-b-md">
+        <h3 class="text-base font-bold text-gray-800">{{ product.name }}</h3>
+        <div class="flex justify-between">
+           <p class="text-lg font-extrabold text-blue-900">
+             {{ formatCurrency(product.price) }}
+           </p>
+           <p class="text-gray-600">Disponibles: 
+               <span class="font-bold text-green-500">{{ product.stock }}</span>
+           </p>
+        </div>
       </div>
   
       <button
         type="button"
         class="absolute top-5 -right-4"
+        @click="cart.addItem(product)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

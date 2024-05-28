@@ -26,7 +26,7 @@
 
       <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col justify-between">
          <div class="relative group" >
-             <div class="p-3">
+             <div>
                  <img  :src="product.image" :alt="product.name"  class="w-full h-80"
                  >
              </div>
@@ -52,9 +52,9 @@
                  </div>
              </div>
          </div>
-         <div class="border-t p-3 bg-gray-50">
+         <div class="border-t p-5 bg-gray-50">
              <div>
-                 <h4 class="uppercase font-bold text-gray-900 text-sm">
+                 <h4 class="uppercase font-semibold text-gray-900 text-sm">
                      {{ product.name }}
                  </h4>
                 

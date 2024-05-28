@@ -29,11 +29,19 @@ export const useProductsStore = defineStore('products', () => {
 
    async function updateProduct(docRef, product) { // Definimos una función para actualizar un producto en Firestore con el documento de referencia y el producto
       const { image, url, ...values } = product // Obtenemos la imagen, la URL y los valores del producto
+
+
       if (image.length) { // Si la imagen tiene una longitud
+       
          await updateDoc(docRef, { // Actualizamos el documento con el documento de referencia y los valores del producto actualizados 
             ...values, // Obtenemos los valores del producto actualizados
             image: url.value // Obtenemos la URL de la imagen
          })
+
+         const imageRef = storageRef(storage, image) // Obtenemos la referencia de la imagen con el almacenamiento y la imagen
+         await deleteObject(imageRef) // Eliminamos la imagen del producto
+         
+        
       } else {
          await updateDoc(docRef, values) // Actualizamos el documento con el documento de referencia y los valores del producto actualizados
       }
