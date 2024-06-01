@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useFirestore, useFirebaseStorage, useCollection } from "vuefire";
-import { collection, addDoc, orderBy, query, limit, updateDoc,doc,getDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, orderBy, query, limit, updateDoc,doc,getDoc, deleteDoc,getDocs } from "firebase/firestore";
 
 import { ref as storageRef, deleteObject } from 'firebase/storage'
 
@@ -11,14 +11,15 @@ export const useProductsStore = defineStore('products', () => {
    const storage = useFirebaseStorage();
    let hideDeleteModal = ref(false);
    const selectedCategory = ref(1);
-   const search = ref('');
+   const Search = ref('');
 
    const q = query(
-      collection(db, 'products'), 
-      orderBy('name')
-   );
+      collection(db, 'products'),
+      
+      orderBy('name'),
+   ); // Creamos una consulta vacía
 
-   const productsCollection = useCollection(q);
+   const productsCollection = useCollection(q); 
    //const productsCollection = useCollection(collection(db, 'products'));
 
    const categories = [
@@ -90,15 +91,15 @@ export const useProductsStore = defineStore('products', () => {
          .filter( product => product.stock > 0)
    });
 
-   const filteredProductsSearch = computed(() =>{
+   const filteredProductsSearch = computed(() => {
       return productsCollection.value
-      .filter(product => product.name.toLowerCase().includes(search.value.toLowerCase()))
-      .filter(product => product.stock > 0)
-   })
+          .filter(product => product.name.toLowerCase().includes(Search.value.toLowerCase()))
+          .filter(product => product.stock > 0);
+  });
 
 
-   async function loadProducts(){ // Definimos una función para cargar los productos de Firestore
-      const productsSnapshot = await useFirestore().collection('products').get(); // Obtenemos los productos de Firestore
+   async function loadProducts() {
+      const productsSnapshot = await getDocs(collection(db, 'products'));// Obtenemos la colección de productos de Firestore
       productsCollection.value = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Mapeamos los documentos de la colección de productos de Firestore
    }
 
@@ -115,6 +116,7 @@ export const useProductsStore = defineStore('products', () => {
       hideDeleteModal,
       categories,
       loadProducts,
+      Search,
       filteredProductsSearch
    }
 });
