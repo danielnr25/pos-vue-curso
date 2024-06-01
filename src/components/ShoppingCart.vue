@@ -45,7 +45,9 @@
 
       <button  
          type="button"
-         class="mt-10 w-full bg-blue-900 hover:bg-blue-700 text-white uppercase font-bold p-3">
+         class="mt-10 w-full bg-blue-900 hover:bg-blue-700 text-white uppercase font-bold p-3"
+         @click="cart.checkout"
+         >
             Confirmar compra
       </button>
    

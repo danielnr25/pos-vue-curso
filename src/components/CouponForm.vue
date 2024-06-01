@@ -21,7 +21,7 @@
       :disabled="store.isValidCoupon"
       >Canjear</button>
    </div>
-   <p class="py-2 text-center text-sm font-extrabold">
+   <p class="py-2 text-center text-base font-extrabold">
       {{ store.couponValidationMessage }}
    </p>
 

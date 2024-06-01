@@ -26,7 +26,7 @@ export const useCouponStore = defineStore('coupon', () => {
 
          setTimeout(() => { //esperamos 3 segundos
             discountPercentage.value = VALID_COUPONS.find(coupon => coupon.name === couponInput.value).discount
-            couponValidationMessage.value = '¡Descuento Aplicado 🥳!'
+            couponValidationMessage.value = '¡Descuento Aplicado... 🥳!'
             //asignamos el porcentaje de descuento al cupón de descuento y mostramos el mensaje de descuento aplicado
 
          }, 3000);

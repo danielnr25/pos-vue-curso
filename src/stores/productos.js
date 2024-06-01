@@ -11,8 +11,15 @@ export const useProductsStore = defineStore('products', () => {
    const storage = useFirebaseStorage();
    let hideDeleteModal = ref(false);
    const selectedCategory = ref(1);
+   const search = ref('');
 
-   const productsCollection = useCollection(collection(db, 'products'));
+   const q = query(
+      collection(db, 'products'), 
+      orderBy('name')
+   );
+
+   const productsCollection = useCollection(q);
+   //const productsCollection = useCollection(collection(db, 'products'));
 
    const categories = [
       { id: 1, name: 'Polos' },
@@ -83,6 +90,18 @@ export const useProductsStore = defineStore('products', () => {
          .filter( product => product.stock > 0)
    });
 
+   const filteredProductsSearch = computed(() =>{
+      return productsCollection.value
+      .filter(product => product.name.toLowerCase().includes(search.value.toLowerCase()))
+      .filter(product => product.stock > 0)
+   })
+
+
+   async function loadProducts(){ // Definimos una función para cargar los productos de Firestore
+      const productsSnapshot = await useFirestore().collection('products').get(); // Obtenemos los productos de Firestore
+      productsCollection.value = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Mapeamos los documentos de la colección de productos de Firestore
+   }
+
 
    return {
       createProduct,
@@ -94,7 +113,8 @@ export const useProductsStore = defineStore('products', () => {
       filteredProducts,
       selectedCategory,
       hideDeleteModal,
-      categories
+      categories,
+      loadProducts,
+      filteredProductsSearch
    }
-
-})
+});

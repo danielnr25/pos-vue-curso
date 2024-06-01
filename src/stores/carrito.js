@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import {ref,computed,watchEffect } from 'vue';
 import { useFirestore } from 'vuefire';
 import { useCouponStore } from './cupones';
+import { addDoc, collection,doc,runTransaction } from 'firebase/firestore';
+import {getCurrentDate} from '@/helpers';
 
 export const UseCartStore = defineStore('cart',() =>{
    
@@ -13,17 +15,56 @@ export const UseCartStore = defineStore('cart',() =>{
    const taxes = ref(0);
    const total = ref(0);
 
+
    const MAX_PRODUCTS = 5;
    const TAX_RATE = 0.18;
 
    watchEffect(() => {
+
       subtotal.value = items.value.reduce((total, item)=> total + item.quantity*item.price,0); 
 
       taxes.value = Number((subtotal.value * TAX_RATE).toFixed(2));
       
       total.value = Number(((subtotal.value + taxes.value) - coupon.discount).toFixed(2));
-
    })
+
+   async function checkout(){
+      try {
+         await addDoc(collection(db,'sales'),{
+            items: items.value.map(item =>{
+               const {stock,category,...data} = item;
+               return data;
+            }),
+            subtotal: subtotal.value,
+            taxes: taxes.value,
+            discount: coupon.discount,
+            total: total.value,
+            date: getCurrentDate()
+         })
+
+         items.value.forEach(async item =>{
+            const productRef = doc(db,'products',item.id);
+            await runTransaction(db,async transaction =>{
+               const currentProduct = await transaction.get(productRef);
+               const stock = currentProduct.data().stock - item.quantity;
+
+               transaction.update(productRef,{stock});
+            })
+
+            $reset();
+            coupon.$reset();
+
+            window.alert('Compra realizada con éxito');
+
+         })
+
+
+
+      } catch (error) {
+         console.error(error);
+      }
+   }
+
 
    function addItem(item){
       const index = isItemInCart(item.id);
@@ -81,6 +122,7 @@ export const UseCartStore = defineStore('cart',() =>{
       addItem,
       updateQuantity,
       removeItem,
+      checkout,
       checkProductQuantity
    }
 

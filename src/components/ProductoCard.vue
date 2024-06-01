@@ -14,7 +14,7 @@
 
 <template>
    <div class="rounded-lg bg-gray-100 shadow-md relative">
-      <img class="rounded-t-lg lg:w-80 w-96 cursor-pointer transition-transform transform hover:scale-105 hover:rounded-lg" :src="product.image" :alt="'Imagen de ' + product.name" />
+      <img class="rounded-t-lg lg:w-full w-96 cursor-pointer transition-transform transform hover:scale-105 hover:rounded-lg" :src="product.image" :alt="'Imagen de ' + product.name" />
       <div class="p-2 space-y-2 bg-gray-100 rounded-b-md">
         <h3 class="text-base font-bold text-gray-800">{{ product.name }}</h3>
         <div class="flex justify-between">
